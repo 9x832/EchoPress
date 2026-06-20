@@ -74,7 +74,7 @@
             <version>${jjwt.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.penggle</groupId>
+            <groupId>pro.fessional</groupId>
             <artifactId>kaptcha</artifactId>
             <version>${kaptcha.version}</version>
         </dependency>
