@@ -20,15 +20,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="os"    column="os"    />
         <result property="status"    column="status"    />
         <result property="isTop"    column="is_top"    />
-        <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
-        <result property="remark"    column="remark"    />
     </resultMap>
 
     <sql id="selectBlogCommentVo">
-        select comment_id, article_id, parent_id, reply_to, user_id, nick_name, email, website, content, ip, location, browser, os, status, is_top, create_by, create_time, update_by, update_time, remark from blog_comment
+        select comment_id, article_id, parent_id, reply_to, user_id, nick_name, email, website, content, ip, location, browser, os, status, is_top, create_time, update_time from blog_comment
     </sql>
 
     <select id="selectBlogCommentList" parameterType="BlogComment" resultMap="BlogCommentResult">
@@ -73,11 +70,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="os != null">os,</if>
             <if test="status != null">status,</if>
             <if test="isTop != null">is_top,</if>
-            <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
             <if test="updateTime != null">update_time,</if>
-            <if test="remark != null">remark,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="articleId != null">#{articleId},</if>
@@ -94,11 +88,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="os != null">#{os},</if>
             <if test="status != null">#{status},</if>
             <if test="isTop != null">#{isTop},</if>
-            <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
             <if test="updateTime != null">#{updateTime},</if>
-            <if test="remark != null">#{remark},</if>
          </trim>
     </insert>
 
@@ -119,11 +110,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="os != null">os = #{os},</if>
             <if test="status != null">status = #{status},</if>
             <if test="isTop != null">is_top = #{isTop},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
-            <if test="updateBy != null">update_by = #{updateBy},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
-            <if test="remark != null">remark = #{remark},</if>
         </trim>
         where comment_id = #{commentId}
     </update>
