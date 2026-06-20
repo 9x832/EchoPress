@@ -2,9 +2,9 @@
 -- RuoYi-Blog 数据库初始化脚本
 -- 基于若依框架设计规范
 -- ----------------------------
-create database if not exists `ry-blog` default character set utf8mb4 collate utf8mb4_general_ci;
+create database if not exists `ruoyi_blog` default character set utf8mb4 collate utf8mb4_general_ci;
 
-use `ry-blog`;
+use `ruoyi_blog`;
 
 -- ----------------------------
 -- 1. 博客用户表
