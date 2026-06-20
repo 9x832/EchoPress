@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogCarouselMapper">
+    
+    <resultMap type="BlogCarousel" id="BlogCarouselResult">
+        <result property="carouselId"    column="carousel_id"    />
+        <result property="title"    column="title"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="linkUrl"    column="link_url"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBlogCarouselVo">
+        select carousel_id, title, image_url, link_url, order_num, status, create_by, create_time, update_by, update_time, remark from blog_carousel
+    </sql>
+
+    <select id="selectBlogCarouselList" parameterType="BlogCarousel" resultMap="BlogCarouselResult">
+        <include refid="selectBlogCarouselVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="imageUrl != null  and imageUrl != ''"> and image_url = #{imageUrl}</if>
+            <if test="linkUrl != null  and linkUrl != ''"> and link_url = #{linkUrl}</if>
+            <if test="orderNum != null "> and order_num = #{orderNum}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogCarouselByCarouselId" parameterType="Long" resultMap="BlogCarouselResult">
+        <include refid="selectBlogCarouselVo"/>
+        where carousel_id = #{carouselId}
+    </select>
+
+    <insert id="insertBlogCarousel" parameterType="BlogCarousel" useGeneratedKeys="true" keyProperty="carouselId">
+        insert into blog_carousel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,</if>
+            <if test="linkUrl != null">link_url,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},</if>
+            <if test="linkUrl != null">#{linkUrl},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogCarousel" parameterType="BlogCarousel">
+        update blog_carousel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url = #{imageUrl},</if>
+            <if test="linkUrl != null">link_url = #{linkUrl},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where carousel_id = #{carouselId}
+    </update>
+
+    <delete id="deleteBlogCarouselByCarouselId" parameterType="Long">
+        delete from blog_carousel where carousel_id = #{carouselId}
+    </delete>
+
+    <delete id="deleteBlogCarouselByCarouselIds" parameterType="String">
+        delete from blog_carousel where carousel_id in 
+        <foreach item="carouselId" collection="array" open="(" separator="," close=")">
+            #{carouselId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogUserMapper">
+    
+    <resultMap type="BlogUser" id="BlogUserResult">
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="email"    column="email"    />
+        <result property="phone"    column="phone"    />
+        <result property="password"    column="password"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="sex"    column="sex"    />
+        <result property="website"    column="website"    />
+        <result property="bio"    column="bio"    />
+        <result property="birthday"    column="birthday"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="loginCount"    column="login_count"    />
+        <result property="articleCount"    column="article_count"    />
+        <result property="userType"    column="user_type"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBlogUserVo">
+        select user_id, user_name, nick_name, email, phone, password, avatar, sex, website, bio, birthday, login_ip, login_date, login_count, article_count, user_type, status, del_flag, create_by, create_time, update_by, update_time, remark from blog_user
+    </sql>
+
+    <select id="selectBlogUserList" parameterType="BlogUser" resultMap="BlogUserResult">
+        <include refid="selectBlogUserVo"/>
+        <where>  
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="website != null  and website != ''"> and website = #{website}</if>
+            <if test="bio != null  and bio != ''"> and bio = #{bio}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="loginIp != null  and loginIp != ''"> and login_ip = #{loginIp}</if>
+            <if test="loginDate != null "> and login_date = #{loginDate}</if>
+            <if test="loginCount != null "> and login_count = #{loginCount}</if>
+            <if test="articleCount != null "> and article_count = #{articleCount}</if>
+            <if test="userType != null  and userType != ''"> and user_type = #{userType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogUserByUserId" parameterType="Long" resultMap="BlogUserResult">
+        <include refid="selectBlogUserVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertBlogUser" parameterType="BlogUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into blog_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="nickName != null and nickName != ''">nick_name,</if>
+            <if test="email != null">email,</if>
+            <if test="phone != null">phone,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="sex != null">sex,</if>
+            <if test="website != null">website,</if>
+            <if test="bio != null">bio,</if>
+            <if test="birthday != null">birthday,</if>
+            <if test="loginIp != null">login_ip,</if>
+            <if test="loginDate != null">login_date,</if>
+            <if test="loginCount != null">login_count,</if>
+            <if test="articleCount != null">article_count,</if>
+            <if test="userType != null">user_type,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="nickName != null and nickName != ''">#{nickName},</if>
+            <if test="email != null">#{email},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="website != null">#{website},</if>
+            <if test="bio != null">#{bio},</if>
+            <if test="birthday != null">#{birthday},</if>
+            <if test="loginIp != null">#{loginIp},</if>
+            <if test="loginDate != null">#{loginDate},</if>
+            <if test="loginCount != null">#{loginCount},</if>
+            <if test="articleCount != null">#{articleCount},</if>
+            <if test="userType != null">#{userType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogUser" parameterType="BlogUser">
+        update blog_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="website != null">website = #{website},</if>
+            <if test="bio != null">bio = #{bio},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="loginIp != null">login_ip = #{loginIp},</if>
+            <if test="loginDate != null">login_date = #{loginDate},</if>
+            <if test="loginCount != null">login_count = #{loginCount},</if>
+            <if test="articleCount != null">article_count = #{articleCount},</if>
+            <if test="userType != null">user_type = #{userType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteBlogUserByUserId" parameterType="Long">
+        delete from blog_user where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteBlogUserByUserIds" parameterType="String">
+        delete from blog_user where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <select id="selectBlogUserByUserName" parameterType="String" resultMap="BlogUserResult">
+        <include refid="selectBlogUserVo"/>
+        where user_name = #{userName}
+    </select>
+
+    <select id="checkUserNameUnique" parameterType="String" resultMap="BlogUserResult">
+        <include refid="selectBlogUserVo"/>
+        where user_name = #{userName} limit 1
+    </select>
+
+    <select id="checkEmailUnique" parameterType="String" resultMap="BlogUserResult">
+        <include refid="selectBlogUserVo"/>
+        where email = #{email} limit 1
+    </select>
+</mapper>

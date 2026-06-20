@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogCommentMapper">
+    
+    <resultMap type="BlogComment" id="BlogCommentResult">
+        <result property="commentId"    column="comment_id"    />
+        <result property="articleId"    column="article_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="replyTo"    column="reply_to"    />
+        <result property="userId"    column="user_id"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="email"    column="email"    />
+        <result property="website"    column="website"    />
+        <result property="content"    column="content"    />
+        <result property="ip"    column="ip"    />
+        <result property="location"    column="location"    />
+        <result property="browser"    column="browser"    />
+        <result property="os"    column="os"    />
+        <result property="status"    column="status"    />
+        <result property="isTop"    column="is_top"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBlogCommentVo">
+        select comment_id, article_id, parent_id, reply_to, user_id, nick_name, email, website, content, ip, location, browser, os, status, is_top, create_by, create_time, update_by, update_time, remark from blog_comment
+    </sql>
+
+    <select id="selectBlogCommentList" parameterType="BlogComment" resultMap="BlogCommentResult">
+        <include refid="selectBlogCommentVo"/>
+        <where>  
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="replyTo != null "> and reply_to = #{replyTo}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="website != null  and website != ''"> and website = #{website}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="browser != null  and browser != ''"> and browser = #{browser}</if>
+            <if test="os != null  and os != ''"> and os = #{os}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="isTop != null "> and is_top = #{isTop}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogCommentByCommentId" parameterType="Long" resultMap="BlogCommentResult">
+        <include refid="selectBlogCommentVo"/>
+        where comment_id = #{commentId}
+    </select>
+
+    <insert id="insertBlogComment" parameterType="BlogComment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into blog_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="replyTo != null">reply_to,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="nickName != null and nickName != ''">nick_name,</if>
+            <if test="email != null">email,</if>
+            <if test="website != null">website,</if>
+            <if test="content != null">content,</if>
+            <if test="ip != null">ip,</if>
+            <if test="location != null">location,</if>
+            <if test="browser != null">browser,</if>
+            <if test="os != null">os,</if>
+            <if test="status != null">status,</if>
+            <if test="isTop != null">is_top,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="replyTo != null">#{replyTo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="nickName != null and nickName != ''">#{nickName},</if>
+            <if test="email != null">#{email},</if>
+            <if test="website != null">#{website},</if>
+            <if test="content != null">#{content},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="location != null">#{location},</if>
+            <if test="browser != null">#{browser},</if>
+            <if test="os != null">#{os},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isTop != null">#{isTop},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogComment" parameterType="BlogComment">
+        update blog_comment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="articleId != null">article_id = #{articleId},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="replyTo != null">reply_to = #{replyTo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="website != null">website = #{website},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="browser != null">browser = #{browser},</if>
+            <if test="os != null">os = #{os},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isTop != null">is_top = #{isTop},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteBlogCommentByCommentId" parameterType="Long">
+        delete from blog_comment where comment_id = #{commentId}
+    </delete>
+
+    <delete id="deleteBlogCommentByCommentIds" parameterType="String">
+        delete from blog_comment where comment_id in 
+        <foreach item="commentId" collection="array" open="(" separator="," close=")">
+            #{commentId}
+        </foreach>
+    </delete>
+</mapper>

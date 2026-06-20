@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogMomentMapper">
+    
+    <resultMap type="BlogMoment" id="BlogMomentResult">
+        <result property="momentId"    column="moment_id"    />
+        <result property="content"    column="content"    />
+        <result property="images"    column="images"    />
+        <result property="location"    column="location"    />
+        <result property="likeCount"    column="like_count"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBlogMomentVo">
+        select moment_id, content, images, location, like_count, status, del_flag, create_by, create_time, update_by, update_time, remark from blog_moment
+    </sql>
+
+    <select id="selectBlogMomentList" parameterType="BlogMoment" resultMap="BlogMomentResult">
+        <include refid="selectBlogMomentVo"/>
+        <where>  
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="images != null  and images != ''"> and images = #{images}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="likeCount != null "> and like_count = #{likeCount}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogMomentByMomentId" parameterType="Long" resultMap="BlogMomentResult">
+        <include refid="selectBlogMomentVo"/>
+        where moment_id = #{momentId}
+    </select>
+
+    <insert id="insertBlogMoment" parameterType="BlogMoment" useGeneratedKeys="true" keyProperty="momentId">
+        insert into blog_moment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null and content != ''">content,</if>
+            <if test="images != null">images,</if>
+            <if test="location != null">location,</if>
+            <if test="likeCount != null">like_count,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="images != null">#{images},</if>
+            <if test="location != null">#{location},</if>
+            <if test="likeCount != null">#{likeCount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogMoment" parameterType="BlogMoment">
+        update blog_moment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="images != null">images = #{images},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="likeCount != null">like_count = #{likeCount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where moment_id = #{momentId}
+    </update>
+
+    <delete id="deleteBlogMomentByMomentId" parameterType="Long">
+        delete from blog_moment where moment_id = #{momentId}
+    </delete>
+
+    <delete id="deleteBlogMomentByMomentIds" parameterType="String">
+        delete from blog_moment where moment_id in 
+        <foreach item="momentId" collection="array" open="(" separator="," close=")">
+            #{momentId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogResourceMapper">
+    
+    <resultMap type="BlogResource" id="BlogResourceResult">
+        <result property="resourceId"    column="resource_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="mimeType"    column="mime_type"    />
+        <result property="extension"    column="extension"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="storageType"    column="storage_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBlogResourceVo">
+        select resource_id, file_name, file_path, file_size, file_type, mime_type, extension, width, height, storage_type, create_by, create_time, update_by, update_time, remark from blog_resource
+    </sql>
+
+    <select id="selectBlogResourceList" parameterType="BlogResource" resultMap="BlogResourceResult">
+        <include refid="selectBlogResourceVo"/>
+        <where>  
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="mimeType != null  and mimeType != ''"> and mime_type = #{mimeType}</if>
+            <if test="extension != null  and extension != ''"> and extension = #{extension}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="storageType != null  and storageType != ''"> and storage_type = #{storageType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogResourceByResourceId" parameterType="Long" resultMap="BlogResourceResult">
+        <include refid="selectBlogResourceVo"/>
+        where resource_id = #{resourceId}
+    </select>
+
+    <insert id="insertBlogResource" parameterType="BlogResource" useGeneratedKeys="true" keyProperty="resourceId">
+        insert into blog_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="filePath != null and filePath != ''">file_path,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="mimeType != null">mime_type,</if>
+            <if test="extension != null">extension,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="storageType != null">storage_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="filePath != null and filePath != ''">#{filePath},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="mimeType != null">#{mimeType},</if>
+            <if test="extension != null">#{extension},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="storageType != null">#{storageType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogResource" parameterType="BlogResource">
+        update blog_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
+            <if test="filePath != null and filePath != ''">file_path = #{filePath},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="mimeType != null">mime_type = #{mimeType},</if>
+            <if test="extension != null">extension = #{extension},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="storageType != null">storage_type = #{storageType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where resource_id = #{resourceId}
+    </update>
+
+    <delete id="deleteBlogResourceByResourceId" parameterType="Long">
+        delete from blog_resource where resource_id = #{resourceId}
+    </delete>
+
+    <delete id="deleteBlogResourceByResourceIds" parameterType="String">
+        delete from blog_resource where resource_id in 
+        <foreach item="resourceId" collection="array" open="(" separator="," close=")">
+            #{resourceId}
+        </foreach>
+    </delete>
+</mapper>

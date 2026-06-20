@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogArticleViewMapper">
+    
+    <resultMap type="BlogArticleView" id="BlogArticleViewResult">
+        <result property="viewId"    column="view_id"    />
+        <result property="articleId"    column="article_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="ip"    column="ip"    />
+        <result property="userAgent"    column="user_agent"    />
+        <result property="viewTime"    column="view_time"    />
+    </resultMap>
+
+    <sql id="selectBlogArticleViewVo">
+        select view_id, article_id, user_id, ip, user_agent, view_time from blog_article_view
+    </sql>
+
+    <select id="selectBlogArticleViewList" parameterType="BlogArticleView" resultMap="BlogArticleViewResult">
+        <include refid="selectBlogArticleViewVo"/>
+        <where>  
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="userAgent != null  and userAgent != ''"> and user_agent = #{userAgent}</if>
+            <if test="viewTime != null "> and view_time = #{viewTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBlogArticleViewByViewId" parameterType="Long" resultMap="BlogArticleViewResult">
+        <include refid="selectBlogArticleViewVo"/>
+        where view_id = #{viewId}
+    </select>
+
+    <insert id="insertBlogArticleView" parameterType="BlogArticleView" useGeneratedKeys="true" keyProperty="viewId">
+        insert into blog_article_view
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">article_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="ip != null">ip,</if>
+            <if test="userAgent != null">user_agent,</if>
+            <if test="viewTime != null">view_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">#{articleId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="userAgent != null">#{userAgent},</if>
+            <if test="viewTime != null">#{viewTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogArticleView" parameterType="BlogArticleView">
+        update blog_article_view
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="articleId != null">article_id = #{articleId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="userAgent != null">user_agent = #{userAgent},</if>
+            <if test="viewTime != null">view_time = #{viewTime},</if>
+        </trim>
+        where view_id = #{viewId}
+    </update>
+
+    <delete id="deleteBlogArticleViewByViewId" parameterType="Long">
+        delete from blog_article_view where view_id = #{viewId}
+    </delete>
+
+    <delete id="deleteBlogArticleViewByViewIds" parameterType="String">
+        delete from blog_article_view where view_id in 
+        <foreach item="viewId" collection="array" open="(" separator="," close=")">
+            #{viewId}
+        </foreach>
+    </delete>
+</mapper>

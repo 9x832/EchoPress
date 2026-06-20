@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyiblog.mapper.BlogUserFollowMapper">
+    
+    <resultMap type="BlogUserFollow" id="BlogUserFollowResult">
+        <result property="followerId"    column="follower_id"    />
+        <result property="followeeId"    column="followee_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBlogUserFollowVo">
+        select follower_id, followee_id, create_time from blog_user_follow
+    </sql>
+
+    <select id="selectBlogUserFollowList" parameterType="BlogUserFollow" resultMap="BlogUserFollowResult">
+        <include refid="selectBlogUserFollowVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectBlogUserFollowByFollowerId" parameterType="Long" resultMap="BlogUserFollowResult">
+        <include refid="selectBlogUserFollowVo"/>
+        where follower_id = #{followerId}
+    </select>
+
+    <insert id="insertBlogUserFollow" parameterType="BlogUserFollow">
+        insert into blog_user_follow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="followerId != null">follower_id,</if>
+            <if test="followeeId != null">followee_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="followerId != null">#{followerId},</if>
+            <if test="followeeId != null">#{followeeId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBlogUserFollow" parameterType="BlogUserFollow">
+        update blog_user_follow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="followeeId != null">followee_id = #{followeeId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where follower_id = #{followerId}
+    </update>
+
+    <delete id="deleteBlogUserFollowByFollowerId" parameterType="Long">
+        delete from blog_user_follow where follower_id = #{followerId}
+    </delete>
+
+    <delete id="deleteBlogUserFollowByFollowerIds" parameterType="String">
+        delete from blog_user_follow where follower_id in 
+        <foreach item="followerId" collection="array" open="(" separator="," close=")">
+            #{followerId}
+        </foreach>
+    </delete>
+</mapper>
