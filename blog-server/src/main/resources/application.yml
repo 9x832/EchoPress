@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ruoyi-blog
+    name: blog-server
   profiles:
     active: druid
   messages:

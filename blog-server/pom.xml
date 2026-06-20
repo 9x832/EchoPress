@@ -8,7 +8,7 @@
     <artifactId>blog-server</artifactId>
     <version>2.0.0</version>
     <packaging>jar</packaging>
-    <name>RuoYi-Blog Server</name>
+    <name>Blog Server</name>
     <description>独立博客系统后端</description>
 
     <properties>

@@ -1,15 +1,15 @@
 -- ----------------------------
--- RuoYi-Blog 数据库初始化脚本
--- 基于若依框架设计规范
--- ----------------------------
-create database if not exists `ruoyi_blog` default character set utf8mb4 collate utf8mb4_general_ci;
+-- -------------------------------------
+-- Blog 独立博客系统 — 数据库初始化脚本
+-- 完全独立，不依赖任何外部框架
+-- -------------------------------------
+create database if not exists `blog` default character set utf8mb4 collate utf8mb4_general_ci;
 
-use `ruoyi_blog`;
+use `blog`;
 
 -- ----------------------------
 -- 1. 博客用户表
--- 博客前台注册用户（读者/博主），参考 sys_user 设计
--- 注：后台管理员使用若依主库的 sys_user 表
+-- 前台注册用户（读者/博主）
 -- ----------------------------
 drop table if exists blog_user;
 create table blog_user (
@@ -66,8 +66,7 @@ create table blog_user_social (
 
 -- ----------------------------
 -- 3. 用户关注关系表
--- 多对多关联，参考 sys_user_role 设计
--- ----------------------------
+-- 多对多关联-- ----------------------------
 drop table if exists blog_user_follow;
 create table blog_user_follow (
   follower_id    bigint(20)    not null                   comment '关注者ID',
@@ -79,7 +78,7 @@ create table blog_user_follow (
 
 -- ----------------------------
 -- 4. 文章分类表
--- 树形结构，参考 sys_dept 设计
+-- 树形结构（支持父子分类）
 -- ----------------------------
 drop table if exists blog_category;
 create table blog_category (
@@ -155,8 +154,7 @@ create table blog_article (
 
 -- ----------------------------
 -- 7. 文章标签关联表
--- 多对多关联，参考 sys_user_role 设计
--- ----------------------------
+-- 多对多关联-- ----------------------------
 drop table if exists blog_article_tag;
 create table blog_article_tag (
   article_id     bigint(20)    not null                   comment '文章ID',
@@ -200,7 +198,7 @@ create table blog_comment (
 
 -- ----------------------------
 -- 9. 用户点赞记录表
--- 用于去重统计，参考 sys_notice_read 设计
+-- 用于去重统计
 -- ----------------------------
 drop table if exists blog_user_like;
 create table blog_user_like (
@@ -277,7 +275,7 @@ create table blog_page (
 
 -- ----------------------------
 -- 13. 站点配置表
--- 参考 sys_config 设计
+-- 系统配置表
 -- ----------------------------
 drop table if exists blog_site_config;
 create table blog_site_config (
@@ -407,9 +405,9 @@ insert into blog_tag (tag_id, tag_name, color, status, create_time) values
 -- 初始化数据：站点配置
 -- ----------------------------
 insert into blog_site_config (config_id, config_name, config_key, config_value, config_type, create_time) values
-(1,  '站点名称',   'site_name',         'RuoYi-Blog',          'Y', sysdate()),
-(2,  '站点描述',   'site_description',  '基于若依框架的个人博客',  'Y', sysdate()),
-(3,  '站点关键词',  'site_keywords',     '若依,博客,RuoYi',       'Y', sysdate()),
+(1,  '站点名称',   'site_name',         'My Blog',            'Y', sysdate()),
+(2,  '站点描述',   'site_description',  '一个简洁的个人博客',     'Y', sysdate()),
+(3,  '站点关键词',  'site_keywords',     '博客,Blog,技术',        'Y', sysdate()),
 (4,  '站点Logo',   'site_logo',         '',                     'Y', sysdate()),
 (5,  '站长头像',   'site_avatar',       '',                     'Y', sysdate()),
 (6,  '站长昵称',   'site_author',       '管理员',               'Y', sysdate()),
@@ -417,7 +415,7 @@ insert into blog_site_config (config_id, config_name, config_key, config_value, 
 (8,  'GitHub地址', 'site_github',       '',                     'Y', sysdate()),
 (9,  '邮箱地址',   'site_email',        '',                     'Y', sysdate()),
 (10, '备案号',     'site_record',       '',                     'Y', sysdate()),
-(11, '页脚信息',   'site_footer',       'Powered by RuoYi-Blog','Y', sysdate()),
+(11, '页脚信息',   'site_footer',       'Powered by Blog',      'Y', sysdate()),
 (12, '评论审核',   'comment_audit',     '0',                    'Y', sysdate()),
 (13, '页面Size',   'page_size',         '10',                   'Y', sysdate());
 
