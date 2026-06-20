@@ -1,0 +1,41 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: ruoyi-blog
+  profiles:
+    active: druid
+  messages:
+    basename: i18n/messages
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 10s
+      lettuce:
+        pool:
+          min-idle: 0
+          max-idle: 8
+          max-active: 8
+
+blog:
+  token:
+    secret: blog-abcdefghijklmnopqrstuvwxyz
+    expireTime: 10080
+
+mybatis:
+  typeAliasesPackage: com.ruoyiblog.**.domain
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+  params: count=countSql
