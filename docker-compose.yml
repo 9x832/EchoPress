@@ -22,6 +22,8 @@ services:
     container_name: blog-backend-1
     environment:
       - SPRING_PROFILES_ACTIVE=druid,docker
+    volumes:
+      - blog-upload-data:/app/upload
     depends_on:
       - mysql
       - redis
@@ -32,6 +34,8 @@ services:
     container_name: blog-backend-2
     environment:
       - SPRING_PROFILES_ACTIVE=druid,docker
+    volumes:
+      - blog-upload-data:/app/upload
     depends_on:
       - mysql
       - redis
@@ -44,6 +48,7 @@ services:
       - "80:80"
     volumes:
       - ./blog-web/dist:/usr/share/nginx/html:ro
+      - blog-upload-data:/usr/share/nginx/html/upload:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - backend1
@@ -52,3 +57,4 @@ services:
 
 volumes:
   blog-mysql-data:
+  blog-upload-data:
