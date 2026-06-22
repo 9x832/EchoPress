@@ -16,7 +16,7 @@ import com.ruoyiblog.service.IBlogUserLikeService;
 @RestController
 @RequestMapping("/blog/user/article")
 @LoginRequired
-public class BlogArticleUserController
+public class BlogArticleLikeController
 {
     @Autowired
     private IBlogUserLikeService blogUserLikeService;
