@@ -1,6 +1,8 @@
 package com.ruoyiblog.mapper;
 
 import java.util.List;
+import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 import com.ruoyiblog.domain.BlogArticle;
 
 /**
@@ -74,4 +76,8 @@ public interface BlogArticleMapper
      * @return 结果
      */
     public int decrementLikeCount(Long articleId);
+
+    public Long selectTotalViews();
+
+    public List<Map<String, Object>> selectPublishTrend(@Param("days") int days);
 }

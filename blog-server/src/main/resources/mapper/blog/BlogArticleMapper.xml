@@ -165,4 +165,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="decrementLikeCount" parameterType="Long">
         update blog_article set like_count = like_count - 1 where article_id = #{articleId} and like_count > 0
     </update>
+
+    <select id="selectTotalViews" resultType="Long">
+        select coalesce(sum(view_count), 0) from blog_article
+    </select>
+
+    <select id="selectPublishTrend" resultType="java.util.HashMap">
+        select date(publish_time) as date, count(*) as count
+        from blog_article
+        where publish_time >= date_sub(curdate(), interval #{days} day)
+        group by date(publish_time)
+        order by date
+    </select>
 </mapper>

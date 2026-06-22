@@ -68,9 +68,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBlogArticleViewByViewIds" parameterType="String">
-        delete from blog_article_view where view_id in 
+        delete from blog_article_view where view_id in
         <foreach item="viewId" collection="array" open="(" separator="," close=")">
             #{viewId}
         </foreach>
     </delete>
+
+    <select id="selectViewTrend" resultType="java.util.HashMap">
+        select date(view_time) as date, count(*) as count
+        from blog_article_view
+        where view_time >= date_sub(curdate(), interval #{days} day)
+        group by date(view_time)
+        order by date
+    </select>
 </mapper>

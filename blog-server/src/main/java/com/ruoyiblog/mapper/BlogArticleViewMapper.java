@@ -1,6 +1,8 @@
 package com.ruoyiblog.mapper;
 
 import java.util.List;
+import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 import com.ruoyiblog.domain.BlogArticleView;
 
 /**
@@ -58,4 +60,6 @@ public interface BlogArticleViewMapper
      * @return 结果
      */
     public int deleteBlogArticleViewByViewIds(Long[] viewIds);
+
+    public List<Map<String, Object>> selectViewTrend(@Param("days") int days);
 }
