@@ -1,5 +1,6 @@
 package com.ruoyiblog.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,6 +55,10 @@ public class BlogUserServiceImpl implements IBlogUserService
     @Override
     public int insertBlogUser(BlogUser blogUser)
     {
+        if (StringUtils.isNotEmpty(blogUser.getPassword()))
+        {
+            blogUser.setPassword(bCryptPasswordEncoder.encode(blogUser.getPassword()));
+        }
         blogUser.setCreateTime(DateUtils.getNowDate());
         return blogUserMapper.insertBlogUser(blogUser);
     }
@@ -61,6 +66,10 @@ public class BlogUserServiceImpl implements IBlogUserService
     @Override
     public int updateBlogUser(BlogUser blogUser)
     {
+        if (StringUtils.isNotEmpty(blogUser.getPassword()))
+        {
+            blogUser.setPassword(bCryptPasswordEncoder.encode(blogUser.getPassword()));
+        }
         blogUser.setUpdateTime(DateUtils.getNowDate());
         return blogUserMapper.updateBlogUser(blogUser);
     }
@@ -150,7 +159,7 @@ public class BlogUserServiceImpl implements IBlogUserService
     }
 
     @Override
-    public String login(LoginDTO dto)
+    public HashMap<String, Object> login(LoginDTO dto)
     {
         validateCaptcha(dto.getCode(), dto.getUuid());
 
@@ -184,7 +193,11 @@ public class BlogUserServiceImpl implements IBlogUserService
         updateUser.setLoginCount(user.getLoginCount() == null ? 1L : user.getLoginCount() + 1);
         blogUserMapper.updateBlogUser(updateUser);
 
-        return token;
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("token", token);
+        result.put("userType", user.getUserType());
+        result.put("nickName", user.getNickName());
+        return result;
     }
 
     private void validateCaptcha(String code, String uuid)

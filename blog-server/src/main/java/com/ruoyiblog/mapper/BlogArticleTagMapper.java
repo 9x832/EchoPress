@@ -58,4 +58,8 @@ public interface BlogArticleTagMapper
      * @return 结果
      */
     public int deleteBlogArticleTagByArticleIds(Long[] articleIds);
+
+    public int insertBlogArticleTagBatch(List<BlogArticleTag> list);
+
+    public List<BlogArticleTag> selectBlogArticleTagByArticleIds(Long[] articleIds);
 }

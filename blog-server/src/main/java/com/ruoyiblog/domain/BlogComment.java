@@ -32,12 +32,6 @@ public class BlogComment extends BaseEntity
     /** 评论者昵称 */
     private String nickName;
 
-    /** 评论者邮箱 */
-    private String email;
-
-    /** 评论者网站 */
-    private String website;
-
     /** 评论内容 */
     private String content;
 
@@ -119,26 +113,6 @@ public class BlogComment extends BaseEntity
         return nickName;
     }
 
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public void setWebsite(String website)
-    {
-        this.website = website;
-    }
-
-    public String getWebsite()
-    {
-        return website;
-    }
-
     public void setContent(String content)
     {
         this.content = content;
@@ -218,8 +192,6 @@ public class BlogComment extends BaseEntity
             .append("replyTo", getReplyTo())
             .append("userId", getUserId())
             .append("nickName", getNickName())
-            .append("email", getEmail())
-            .append("website", getWebsite())
             .append("content", getContent())
             .append("ip", getIp())
             .append("location", getLocation())

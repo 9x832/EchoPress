@@ -15,7 +15,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectBlogArticleTagList" parameterType="BlogArticleTag" resultMap="BlogArticleTagResult">
         <include refid="selectBlogArticleTagVo"/>
-        <where>  
+        <where>
+            <if test="articleId != null "> and article_id = #{articleId}</if>
+            <if test="tagId != null "> and tag_id = #{tagId}</if>
         </where>
     </select>
     
@@ -43,6 +45,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
         where article_id = #{articleId}
     </update>
+
+    <select id="selectBlogArticleTagByArticleIds" parameterType="Long[]" resultMap="BlogArticleTagResult">
+        <include refid="selectBlogArticleTagVo"/>
+        where article_id in
+        <foreach item="articleId" collection="array" open="(" separator="," close=")">
+            #{articleId}
+        </foreach>
+    </select>
+
+    <insert id="insertBlogArticleTagBatch">
+        insert into blog_article_tag (article_id, tag_id) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.articleId}, #{item.tagId})
+        </foreach>
+    </insert>
 
     <delete id="deleteBlogArticleTagByArticleId" parameterType="Long">
         delete from blog_article_tag where article_id = #{articleId}

@@ -46,10 +46,8 @@ public class BlogUserController
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginDTO loginDTO)
     {
-        String token = blogUserService.login(loginDTO);
-        Map<String, Object> data = new HashMap<>();
-        data.put("token", token);
-        return AjaxResult.success(data);
+        Map<String, Object> result = blogUserService.login(loginDTO);
+        return AjaxResult.success(result);
     }
 
     /**

@@ -17,7 +17,7 @@ public class WebMvcConfig implements WebMvcConfigurer
     public void addInterceptors(InterceptorRegistry registry)
     {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/blog/admin/**");
+                .addPathPatterns("/blog/admin/**", "/blog/user/**", "/blog/comment/**");
     }
 
     @Override
@@ -29,5 +29,12 @@ public class WebMvcConfig implements WebMvcConfigurer
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
+    }
+
+    @Override
+    public void addResourceHandlers(org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry registry)
+    {
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:upload/");
     }
 }

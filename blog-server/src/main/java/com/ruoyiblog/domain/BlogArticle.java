@@ -1,6 +1,7 @@
 package com.ruoyiblog.domain;
 
 import java.util.Date;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,6 +19,9 @@ public class BlogArticle extends BaseEntity
 
     /** 文章ID */
     private Long articleId;
+
+    /** 作者用户ID */
+    private Long userId;
 
     /** 文章标题 */
     private String title;
@@ -77,6 +81,12 @@ public class BlogArticle extends BaseEntity
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date publishTime;
 
+    /** 筛选用 - 标签ID（非DB字段） */
+    private Long tagId;
+
+    /** 文章标签ID列表（非DB字段） */
+    private List<Long> tagIds;
+
     public void setArticleId(Long articleId)
     {
         this.articleId = articleId;
@@ -85,6 +95,16 @@ public class BlogArticle extends BaseEntity
     public Long getArticleId()
     {
         return articleId;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
+    }
+
+    public Long getUserId()
+    {
+        return userId;
     }
 
     public void setTitle(String title)
@@ -277,10 +297,31 @@ public class BlogArticle extends BaseEntity
         return publishTime;
     }
 
+    public void setTagId(Long tagId)
+    {
+        this.tagId = tagId;
+    }
+
+    public Long getTagId()
+    {
+        return tagId;
+    }
+
+    public void setTagIds(List<Long> tagIds)
+    {
+        this.tagIds = tagIds;
+    }
+
+    public List<Long> getTagIds()
+    {
+        return tagIds;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("articleId", getArticleId())
+            .append("userId", getUserId())
             .append("title", getTitle())
             .append("slug", getSlug())
             .append("summary", getSummary())
@@ -300,6 +341,8 @@ public class BlogArticle extends BaseEntity
             .append("status", getStatus())
             .append("delFlag", getDelFlag())
             .append("publishTime", getPublishTime())
+            .append("tagId", getTagId())
+            .append("tagIds", getTagIds())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();

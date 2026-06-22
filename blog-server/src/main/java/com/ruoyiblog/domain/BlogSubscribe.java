@@ -19,6 +19,9 @@ public class BlogSubscribe extends BaseEntity
     /** 订阅ID */
     private Long subscribeId;
 
+    /** 订阅作者用户ID */
+    private Long userId;
+
     /** 订阅邮箱 */
     private String email;
 
@@ -43,6 +46,16 @@ public class BlogSubscribe extends BaseEntity
     public Long getSubscribeId()
     {
         return subscribeId;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
+    }
+
+    public Long getUserId()
+    {
+        return userId;
     }
 
     public void setEmail(String email)
@@ -99,6 +112,7 @@ public class BlogSubscribe extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("subscribeId", getSubscribeId())
+            .append("userId", getUserId())
             .append("email", getEmail())
             .append("status", getStatus())
             .append("verifyCode", getVerifyCode())

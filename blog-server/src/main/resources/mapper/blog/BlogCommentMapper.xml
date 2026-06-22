@@ -11,8 +11,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="replyTo"    column="reply_to"    />
         <result property="userId"    column="user_id"    />
         <result property="nickName"    column="nick_name"    />
-        <result property="email"    column="email"    />
-        <result property="website"    column="website"    />
         <result property="content"    column="content"    />
         <result property="ip"    column="ip"    />
         <result property="location"    column="location"    />
@@ -25,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBlogCommentVo">
-        select comment_id, article_id, parent_id, reply_to, user_id, nick_name, email, website, content, ip, location, browser, os, status, is_top, create_time, update_time from blog_comment
+        select comment_id, article_id, parent_id, reply_to, user_id, nick_name, content, ip, location, browser, os, status, is_top, create_time, update_time from blog_comment
     </sql>
 
     <select id="selectBlogCommentList" parameterType="BlogComment" resultMap="BlogCommentResult">
@@ -36,8 +34,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="replyTo != null "> and reply_to = #{replyTo}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
-            <if test="email != null  and email != ''"> and email = #{email}</if>
-            <if test="website != null  and website != ''"> and website = #{website}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
             <if test="location != null  and location != ''"> and location = #{location}</if>
@@ -61,8 +57,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="replyTo != null">reply_to,</if>
             <if test="userId != null">user_id,</if>
             <if test="nickName != null and nickName != ''">nick_name,</if>
-            <if test="email != null">email,</if>
-            <if test="website != null">website,</if>
             <if test="content != null">content,</if>
             <if test="ip != null">ip,</if>
             <if test="location != null">location,</if>
@@ -79,8 +73,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="replyTo != null">#{replyTo},</if>
             <if test="userId != null">#{userId},</if>
             <if test="nickName != null and nickName != ''">#{nickName},</if>
-            <if test="email != null">#{email},</if>
-            <if test="website != null">#{website},</if>
             <if test="content != null">#{content},</if>
             <if test="ip != null">#{ip},</if>
             <if test="location != null">#{location},</if>
@@ -101,8 +93,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="replyTo != null">reply_to = #{replyTo},</if>
             <if test="userId != null">user_id = #{userId},</if>
             <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
-            <if test="email != null">email = #{email},</if>
-            <if test="website != null">website = #{website},</if>
             <if test="content != null">content = #{content},</if>
             <if test="ip != null">ip = #{ip},</if>
             <if test="location != null">location = #{location},</if>

@@ -53,6 +53,7 @@ public class BlogSubscribeServiceImpl implements IBlogSubscribeService
     @Override
     public int insertBlogSubscribe(BlogSubscribe blogSubscribe)
     {
+        blogSubscribe.setSubscribeTime(DateUtils.getNowDate());
         blogSubscribe.setCreateTime(DateUtils.getNowDate());
         return blogSubscribeMapper.insertBlogSubscribe(blogSubscribe);
     }

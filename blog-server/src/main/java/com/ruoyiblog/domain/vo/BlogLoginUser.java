@@ -1,6 +1,7 @@
 package com.ruoyiblog.domain.vo;
 
-import com.alibaba.fastjson2.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 博客前台登录用户身份（Redis缓存主体）
@@ -8,6 +9,7 @@ import com.alibaba.fastjson2.annotation.JSONField;
  * @author ruoyi
  * @date 2026-06-20
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BlogLoginUser
 {
     /** 用户ID */
@@ -75,7 +77,7 @@ public class BlogLoginUser
         this.userName = userName;
     }
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public String getPassword()
     {
         return null;
@@ -86,25 +88,25 @@ public class BlogLoginUser
         return userName;
     }
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public boolean isAccountNonExpired()
     {
         return true;
     }
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public boolean isAccountNonLocked()
     {
         return true;
     }
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public boolean isCredentialsNonExpired()
     {
         return true;
     }
 
-    @JSONField(serialize = false)
+    @JsonIgnore
     public boolean isEnabled()
     {
         return true;

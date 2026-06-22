@@ -17,6 +17,9 @@ public class BlogMoment extends BaseEntity
     /** 动态ID */
     private Long momentId;
 
+    /** 作者用户ID */
+    private Long userId;
+
     /** 动态内容 */
     private String content;
 
@@ -32,6 +35,9 @@ public class BlogMoment extends BaseEntity
     /** 状态（0公开 1私密 2草稿） */
     private String status;
 
+    /** 发布者昵称（非DB字段，用于前台展示） */
+    private String nickName;
+
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
@@ -43,6 +49,16 @@ public class BlogMoment extends BaseEntity
     public Long getMomentId()
     {
         return momentId;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
+    }
+
+    public Long getUserId()
+    {
+        return userId;
     }
 
     public void setContent(String content)
@@ -105,10 +121,22 @@ public class BlogMoment extends BaseEntity
         return delFlag;
     }
 
+    public String getNickName()
+    {
+        return nickName;
+    }
+
+    public void setNickName(String nickName)
+    {
+        this.nickName = nickName;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("momentId", getMomentId())
+            .append("userId", getUserId())
+            .append("nickName", getNickName())
             .append("content", getContent())
             .append("images", getImages())
             .append("location", getLocation())

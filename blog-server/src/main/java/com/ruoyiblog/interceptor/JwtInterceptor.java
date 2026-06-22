@@ -9,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.alibaba.fastjson2.JSON;
 import com.ruoyiblog.common.core.AjaxResult;
 import com.ruoyiblog.common.utils.JwtUtils;
+import com.ruoyiblog.common.utils.SecurityUtils;
 import com.ruoyiblog.domain.vo.BlogLoginUser;
 
 @Component
@@ -28,10 +29,15 @@ public class JwtInterceptor implements HandlerInterceptor
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
 
-        AdminRequired classAnnotation = handlerMethod.getBeanType().getAnnotation(AdminRequired.class);
-        AdminRequired methodAnnotation = handlerMethod.getMethodAnnotation(AdminRequired.class);
+        AdminRequired adminClass = handlerMethod.getBeanType().getAnnotation(AdminRequired.class);
+        AdminRequired adminMethod = handlerMethod.getMethodAnnotation(AdminRequired.class);
+        LoginRequired loginClass = handlerMethod.getBeanType().getAnnotation(LoginRequired.class);
+        LoginRequired loginMethod = handlerMethod.getMethodAnnotation(LoginRequired.class);
 
-        if (classAnnotation == null && methodAnnotation == null)
+        boolean needAdmin = adminClass != null || adminMethod != null;
+        boolean needLogin = needAdmin || loginClass != null || loginMethod != null;
+
+        if (!needLogin)
         {
             return true;
         }
@@ -45,7 +51,9 @@ public class JwtInterceptor implements HandlerInterceptor
             return false;
         }
 
-        if (!"01".equals(loginUser.getUserType()))
+        SecurityUtils.setLoginUser(loginUser);
+
+        if (needAdmin && !("01".equals(loginUser.getUserType()) || "02".equals(loginUser.getUserType())))
         {
             response.setStatus(403);
             response.setContentType("application/json;charset=UTF-8");
@@ -54,5 +62,11 @@ public class JwtInterceptor implements HandlerInterceptor
         }
 
         return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+    {
+        SecurityUtils.remove();
     }
 }

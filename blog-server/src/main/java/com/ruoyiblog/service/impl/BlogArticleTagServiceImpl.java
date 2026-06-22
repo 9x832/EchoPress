@@ -1,5 +1,6 @@
 package com.ruoyiblog.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,5 +90,37 @@ public class BlogArticleTagServiceImpl implements IBlogArticleTagService
     public int deleteBlogArticleTagByArticleId(Long articleId)
     {
         return blogArticleTagMapper.deleteBlogArticleTagByArticleId(articleId);
+    }
+
+    @Override
+    public int insertBlogArticleTagBatch(List<BlogArticleTag> list)
+    {
+        if (list == null || list.isEmpty()) return 0;
+        return blogArticleTagMapper.insertBlogArticleTagBatch(list);
+    }
+
+    @Override
+    public void saveArticleTags(Long articleId, List<Long> tagIds)
+    {
+        blogArticleTagMapper.deleteBlogArticleTagByArticleId(articleId);
+        if (tagIds != null && !tagIds.isEmpty())
+        {
+            List<BlogArticleTag> list = new ArrayList<>();
+            for (Long tagId : tagIds)
+            {
+                BlogArticleTag at = new BlogArticleTag();
+                at.setArticleId(articleId);
+                at.setTagId(tagId);
+                list.add(at);
+            }
+            blogArticleTagMapper.insertBlogArticleTagBatch(list);
+        }
+    }
+
+    @Override
+    public List<BlogArticleTag> selectBlogArticleTagByArticleIds(Long[] articleIds)
+    {
+        if (articleIds == null || articleIds.length == 0) return new ArrayList<>();
+        return blogArticleTagMapper.selectBlogArticleTagByArticleIds(articleIds);
     }
 }

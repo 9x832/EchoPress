@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="BlogMoment" id="BlogMomentResult">
         <result property="momentId"    column="moment_id"    />
+        <result property="userId"    column="user_id"    />
         <result property="content"    column="content"    />
         <result property="images"    column="images"    />
         <result property="location"    column="location"    />
@@ -17,12 +18,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBlogMomentVo">
-        select moment_id, content, images, location, like_count, status, del_flag, create_time, update_time from blog_moment
+        select moment_id, user_id, content, images, location, like_count, status, del_flag, create_time, update_time from blog_moment
     </sql>
 
     <select id="selectBlogMomentList" parameterType="BlogMoment" resultMap="BlogMomentResult">
         <include refid="selectBlogMomentVo"/>
         <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="images != null  and images != ''"> and images = #{images}</if>
             <if test="location != null  and location != ''"> and location = #{location}</if>
@@ -40,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into blog_moment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="content != null and content != ''">content,</if>
+            <if test="userId != null">user_id,</if>
             <if test="images != null">images,</if>
             <if test="location != null">location,</if>
             <if test="likeCount != null">like_count,</if>
@@ -50,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="content != null and content != ''">#{content},</if>
+            <if test="userId != null">#{userId},</if>
             <if test="images != null">#{images},</if>
             <if test="location != null">#{location},</if>
             <if test="likeCount != null">#{likeCount},</if>
@@ -64,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update blog_moment
         <trim prefix="SET" suffixOverrides=",">
             <if test="content != null and content != ''">content = #{content},</if>
+            <if test="userId != null">user_id = #{userId},</if>
             <if test="images != null">images = #{images},</if>
             <if test="location != null">location = #{location},</if>
             <if test="likeCount != null">like_count = #{likeCount},</if>

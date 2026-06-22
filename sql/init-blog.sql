@@ -122,6 +122,7 @@ create table blog_tag (
 drop table if exists blog_article;
 create table blog_article (
   article_id     bigint(20)    not null auto_increment    comment '文章ID',
+  user_id        bigint(20)    default null               comment '作者用户ID',
   title          varchar(200)  not null                   comment '文章标题',
   slug           varchar(200)  default null               comment '文章别名（SEO友好URL）',
   summary        varchar(500)  default ''                 comment '文章摘要',
@@ -149,7 +150,8 @@ create table blog_article (
   primary key (article_id),
   key idx_blog_article_ct (category_id),
   key idx_blog_article_st (status),
-  key idx_blog_article_pt (publish_time)
+  key idx_blog_article_pt (publish_time),
+  key idx_blog_article_uid (user_id)
 ) engine=innodb auto_increment=100 comment = '文章表';
 
 -- ----------------------------
@@ -175,8 +177,6 @@ create table blog_comment (
   reply_to       bigint(20)    default null               comment '回复目标用户ID',
   user_id        bigint(20)    default null               comment '评论用户ID（blog_user.user_id）',
   nick_name      varchar(30)   not null                   comment '评论者昵称',
-  email          varchar(50)   default null               comment '评论者邮箱',
-  website        varchar(200)  default null               comment '评论者网站',
   content        text                                      comment '评论内容',
   ip             varchar(128)  default ''                 comment '评论IP',
   location       varchar(255)  default null               comment '评论者所在地',
@@ -300,6 +300,7 @@ create table blog_site_config (
 drop table if exists blog_moment;
 create table blog_moment (
   moment_id      bigint(20)    not null auto_increment    comment '动态ID',
+  user_id        bigint(20)    default null               comment '作者用户ID',
   content        varchar(2000) not null                   comment '动态内容',
   images         varchar(2000) default null               comment '图片列表（JSON数组）',
   location       varchar(255)  default null               comment '发布位置',
@@ -312,7 +313,8 @@ create table blog_moment (
   update_time    datetime                                 comment '更新时间',
   remark         varchar(500)  default null               comment '备注',
   primary key (moment_id),
-  key idx_blog_moment_ct (create_time)
+  key idx_blog_moment_ct (create_time),
+  key idx_blog_moment_uid (user_id)
 ) engine=innodb auto_increment=100 comment = '动态/说说表';
 
 -- ----------------------------
@@ -365,6 +367,7 @@ drop table if exists blog_subscribe;
 create table blog_subscribe (
   subscribe_id   bigint(20)    not null auto_increment    comment '订阅ID',
   email          varchar(50)   not null                   comment '订阅邮箱',
+  user_id        bigint(20)    default null               comment '订阅作者用户ID',
   status         char(1)       default '0'                comment '状态（0正常 1停用）',
   verify_code    varchar(64)   default null               comment '验证码',
   verified       char(1)       default '0'                comment '是否已验证（0否 1是）',

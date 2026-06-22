@@ -1,5 +1,6 @@
 package com.ruoyiblog.service;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyiblog.domain.BlogUser;
 import com.ruoyiblog.domain.dto.LoginDTO;
@@ -89,7 +90,7 @@ public interface IBlogUserService
      * 用户登录
      *
      * @param loginDTO 登录信息
-     * @return token
+     * @return token + userType + nickName
      */
-    public String login(LoginDTO loginDTO);
+    public HashMap<String, Object> login(LoginDTO loginDTO);
 }

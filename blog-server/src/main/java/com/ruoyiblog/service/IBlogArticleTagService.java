@@ -58,4 +58,10 @@ public interface IBlogArticleTagService
      * @return 结果
      */
     public int deleteBlogArticleTagByArticleId(Long articleId);
+
+    public int insertBlogArticleTagBatch(List<BlogArticleTag> list);
+
+    public void saveArticleTags(Long articleId, List<Long> tagIds);
+
+    public List<BlogArticleTag> selectBlogArticleTagByArticleIds(Long[] articleIds);
 }
