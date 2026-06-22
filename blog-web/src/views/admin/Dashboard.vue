@@ -36,7 +36,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts'
 import { getDashboardData } from '@/api/dashboard'
 
@@ -53,6 +54,8 @@ const cards = ref([
 
 const publishChartRef = ref(null)
 const viewChartRef = ref(null)
+const publishChart = ref(null)
+const viewChart = ref(null)
 
 function makeLineChart(data, color) {
   return {
@@ -103,15 +106,24 @@ onMounted(async () => {
 
       await nextTick()
       if (publishChartRef.value) {
-        const c1 = echarts.init(publishChartRef.value)
-        c1.setOption(makeLineChart(fillDateGaps(res.data.publishTrend), '#409eff'))
+        publishChart.value?.dispose()
+        publishChart.value = echarts.init(publishChartRef.value)
+        publishChart.value.setOption(makeLineChart(fillDateGaps(res.data.publishTrend), '#409eff'))
       }
       if (viewChartRef.value) {
-        const c2 = echarts.init(viewChartRef.value)
-        c2.setOption(makeLineChart(fillDateGaps(res.data.viewTrend), '#67c23a'))
+        viewChart.value?.dispose()
+        viewChart.value = echarts.init(viewChartRef.value)
+        viewChart.value.setOption(makeLineChart(fillDateGaps(res.data.viewTrend), '#67c23a'))
       }
     }
-  } catch {}
+  } catch {
+    ElMessage.error('加载仪表盘数据失败')
+  }
+})
+
+onUnmounted(() => {
+  publishChart.value?.dispose()
+  viewChart.value?.dispose()
 })
 </script>
 
