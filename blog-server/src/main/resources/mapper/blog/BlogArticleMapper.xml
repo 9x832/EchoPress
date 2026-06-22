@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="BlogArticle" id="BlogArticleResult">
         <result property="articleId"    column="article_id"    />
+        <result property="userId"    column="user_id"    />
         <result property="title"    column="title"    />
         <result property="slug"    column="slug"    />
         <result property="summary"    column="summary"    />
@@ -30,17 +31,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectBlogArticleVo">
-        select article_id, title, slug, summary, content, cover, category_id, article_type, article_source, source_url, is_top, is_recommend, is_comment, view_count, like_count, comment_count, word_count, status, del_flag, publish_time, create_time, update_time from blog_article
+        select article_id, user_id, title, slug, summary, content, cover, category_id, article_type, article_source, source_url, is_top, is_recommend, is_comment, view_count, like_count, comment_count, word_count, status, del_flag, publish_time, create_time, update_time from blog_article
     </sql>
 
     <select id="selectBlogArticleList" parameterType="BlogArticle" resultMap="BlogArticleResult">
         <include refid="selectBlogArticleVo"/>
         <where>  
-            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
             <if test="slug != null  and slug != ''"> and slug = #{slug}</if>
             <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
             <if test="cover != null  and cover != ''"> and cover = #{cover}</if>
+            <if test="tagId != null "> and article_id in (select article_id from blog_article_tag where tag_id = #{tagId})</if>
             <if test="categoryId != null "> and category_id = #{categoryId}</if>
             <if test="articleType != null  and articleType != ''"> and article_type = #{articleType}</if>
             <if test="articleSource != null  and articleSource != ''"> and article_source = #{articleSource}</if>
@@ -55,8 +58,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="publishTime != null "> and publish_time = #{publishTime}</if>
         </where>
+        order by is_top desc, publish_time desc, create_time desc
     </select>
-    
+
     <select id="selectBlogArticleByArticleId" parameterType="Long" resultMap="BlogArticleResult">
         <include refid="selectBlogArticleVo"/>
         where article_id = #{articleId}
@@ -66,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into blog_article
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">title,</if>
+            <if test="userId != null">user_id,</if>
             <if test="slug != null">slug,</if>
             <if test="summary != null">summary,</if>
             <if test="content != null">content,</if>
@@ -89,6 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">#{title},</if>
+            <if test="userId != null">#{userId},</if>
             <if test="slug != null">#{slug},</if>
             <if test="summary != null">#{summary},</if>
             <if test="content != null">#{content},</if>
@@ -116,6 +122,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update blog_article
         <trim prefix="SET" suffixOverrides=",">
             <if test="title != null and title != ''">title = #{title},</if>
+            <if test="userId != null">user_id = #{userId},</if>
             <if test="slug != null">slug = #{slug},</if>
             <if test="summary != null">summary = #{summary},</if>
             <if test="content != null">content = #{content},</if>
@@ -145,9 +152,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBlogArticleByArticleIds" parameterType="String">
-        delete from blog_article where article_id in 
+        delete from blog_article where article_id in
         <foreach item="articleId" collection="array" open="(" separator="," close=")">
             #{articleId}
         </foreach>
     </delete>
+
+    <update id="incrementLikeCount" parameterType="Long">
+        update blog_article set like_count = like_count + 1 where article_id = #{articleId}
+    </update>
+
+    <update id="decrementLikeCount" parameterType="Long">
+        update blog_article set like_count = like_count - 1 where article_id = #{articleId} and like_count > 0
+    </update>
 </mapper>

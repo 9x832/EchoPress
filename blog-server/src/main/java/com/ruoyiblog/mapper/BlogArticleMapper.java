@@ -58,4 +58,20 @@ public interface BlogArticleMapper
      * @return 结果
      */
     public int deleteBlogArticleByArticleIds(Long[] articleIds);
+
+    /**
+     * 原子增加文章点赞数
+     *
+     * @param articleId 文章主键
+     * @return 结果
+     */
+    public int incrementLikeCount(Long articleId);
+
+    /**
+     * 原子减少文章点赞数
+     *
+     * @param articleId 文章主键
+     * @return 结果
+     */
+    public int decrementLikeCount(Long articleId);
 }
