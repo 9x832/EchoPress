@@ -53,9 +53,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteBlogUserLikeByUserIds" parameterType="String">
-        delete from blog_user_like where user_id in 
+        delete from blog_user_like where user_id in
         <foreach item="userId" collection="array" open="(" separator="," close=")">
             #{userId}
         </foreach>
     </delete>
+
+    <select id="selectByUserIdAndArticleId" resultMap="BlogUserLikeResult">
+        <include refid="selectBlogUserLikeVo"/>
+        where user_id = #{userId} and article_id = #{articleId}
+    </select>
+
+    <delete id="deleteByUserIdAndArticleId">
+        delete from blog_user_like where user_id = #{userId} and article_id = #{articleId}
+    </delete>
+
+    <select id="selectLikedArticleIds" resultType="Long">
+        select article_id from blog_user_like
+        where user_id = #{userId}
+        and article_id in
+        <foreach item="id" collection="articleIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

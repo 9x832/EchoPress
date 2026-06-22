@@ -2,6 +2,7 @@ package com.ruoyiblog.mapper;
 
 import java.util.List;
 import com.ruoyiblog.domain.BlogUserLike;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 用户点赞记录Mapper接口
@@ -58,4 +59,31 @@ public interface BlogUserLikeMapper
      * @return 结果
      */
     public int deleteBlogUserLikeByUserIds(Long[] userIds);
+
+    /**
+     * 根据用户ID和文章ID查询点赞记录
+     *
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 用户点赞记录
+     */
+    public BlogUserLike selectByUserIdAndArticleId(@Param("userId") Long userId, @Param("articleId") Long articleId);
+
+    /**
+     * 根据用户ID和文章ID删除点赞记录
+     *
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 结果
+     */
+    public int deleteByUserIdAndArticleId(@Param("userId") Long userId, @Param("articleId") Long articleId);
+
+    /**
+     * 查询用户已点赞的文章ID列表
+     *
+     * @param userId 用户ID
+     * @param articleIds 文章ID数组
+     * @return 已点赞的文章ID列表
+     */
+    public List<Long> selectLikedArticleIds(@Param("userId") Long userId, @Param("articleIds") Long[] articleIds);
 }
