@@ -5,6 +5,7 @@
       <router-link :to="'/article/' + a.articleId" class="article-title">{{ a.title }}</router-link>
       <div class="article-meta">
         <span>{{ formatDate(a.publishTime || a.createTime) }}</span>
+        <span v-if="a.wordCount"><el-icon><Timer /></el-icon> {{ readingTime(a.wordCount) }}</span>
         <span>{{ a.viewCount || 0 }} 阅读</span>
         <LikeButton :article-id="a.articleId" v-model:like-count="a.likeCount" v-model:liked="a._liked" />
       </div>
@@ -19,7 +20,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getPublicArticleList, getLikedStatus } from '@/api/article'
 import { getPublicTag } from '@/api/tag'
-import { formatDate } from '@/utils/format'
+import { formatDate, readingTime } from '@/utils/format'
 import { useUserStore } from '@/stores/user'
 import LikeButton from '@/components/LikeButton.vue'
 

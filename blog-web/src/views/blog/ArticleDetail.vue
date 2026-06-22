@@ -6,6 +6,7 @@
       <h1 class="title">{{ article.title }}</h1>
       <div class="meta">
         <span><el-icon><Clock /></el-icon> {{ formatDateTime(article.publishTime || article.createTime) }}</span>
+        <span v-if="article.wordCount"><el-icon><Timer /></el-icon> {{ readingTime(article.wordCount) }}</span>
         <span><el-icon><View /></el-icon> {{ article.viewCount || 0 }} 次阅读</span>
         <span><el-icon><ChatDotSquare /></el-icon> {{ comments.length }} 条评论</span>
         <LikeButton :article-id="article.articleId" v-model:like-count="article.likeCount" v-model:liked="isLiked" />
@@ -106,7 +107,7 @@ import LikeButton from '@/components/LikeButton.vue'
 import { getPublicCommentList, submitPublicComment } from '@/api/comment'
 import { submitSubscribe } from '@/api/subscribe'
 import { getPublicTagList } from '@/api/tag'
-import { formatDateTime } from '@/utils/format'
+import { formatDateTime, readingTime } from '@/utils/format'
 import { ElMessage } from 'element-plus'
 
 const route = useRoute()

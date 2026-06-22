@@ -40,6 +40,7 @@
             <div class="article-meta">
               <span><el-icon><Clock /></el-icon> {{ formatDate(article.publishTime || article.createTime) }}</span>
               <span v-if="article.categoryName"><el-icon><Collection /></el-icon> {{ article.categoryName }}</span>
+              <span v-if="article.wordCount"><el-icon><Timer /></el-icon> {{ readingTime(article.wordCount) }}</span>
               <span><el-icon><View /></el-icon> {{ article.viewCount || 0 }}</span>
               <span><el-icon><ChatDotSquare /></el-icon> {{ article.commentCount || 0 }}</span>
               <LikeButton :article-id="article.articleId" v-model:like-count="article.likeCount" v-model:liked="article._liked" />
@@ -90,7 +91,7 @@ import { getPublicArticleList, getLikedStatus } from '@/api/article'
 import { getPublicCategoryList } from '@/api/category'
 import { getPublicTagList } from '@/api/tag'
 import { getPublicCarouselList } from '@/api/carousel'
-import { formatDate } from '@/utils/format'
+import { formatDate, readingTime } from '@/utils/format'
 import { useUserStore } from '@/stores/user'
 import LikeButton from '@/components/LikeButton.vue'
 const loading = ref(true)
