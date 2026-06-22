@@ -1,11 +1,16 @@
 package com.ruoyiblog.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import com.ruoyiblog.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.ruoyiblog.mapper.BlogUserLikeMapper;
+import com.ruoyiblog.mapper.BlogArticleMapper;
 import com.ruoyiblog.domain.BlogUserLike;
+import com.ruoyiblog.domain.BlogArticle;
 import com.ruoyiblog.service.IBlogUserLikeService;
 
 /**
@@ -19,6 +24,9 @@ public class BlogUserLikeServiceImpl implements IBlogUserLikeService
 {
     @Autowired
     private BlogUserLikeMapper blogUserLikeMapper;
+
+    @Autowired
+    private BlogArticleMapper blogArticleMapper;
 
     /**
      * 查询用户点赞记录
@@ -91,5 +99,62 @@ public class BlogUserLikeServiceImpl implements IBlogUserLikeService
     public int deleteBlogUserLikeByUserId(Long userId)
     {
         return blogUserLikeMapper.deleteBlogUserLikeByUserId(userId);
+    }
+
+    /**
+     * 切换用户点赞状态（点赞/取消点赞）
+     *
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 包含点赞状态和点赞数的Map
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> toggleLike(Long userId, Long articleId)
+    {
+        BlogUserLike existing = blogUserLikeMapper.selectByUserIdAndArticleId(userId, articleId);
+        Map<String, Object> result = new HashMap<>();
+        if (existing != null)
+        {
+            blogUserLikeMapper.deleteByUserIdAndArticleId(userId, articleId);
+            blogArticleMapper.decrementLikeCount(articleId);
+            result.put("liked", false);
+        }
+        else
+        {
+            BlogUserLike like = new BlogUserLike();
+            like.setUserId(userId);
+            like.setArticleId(articleId);
+            like.setCreateTime(DateUtils.getNowDate());
+            blogUserLikeMapper.insertBlogUserLike(like);
+            blogArticleMapper.incrementLikeCount(articleId);
+            result.put("liked", true);
+        }
+        BlogArticle updated = blogArticleMapper.selectBlogArticleByArticleId(articleId);
+        result.put("likeCount", updated != null ? updated.getLikeCount() : 0L);
+        return result;
+    }
+
+    /**
+     * 批量查询用户对文章的点赞状态
+     *
+     * @param userId 用户ID
+     * @param articleIds 文章ID数组
+     * @return 文章ID与点赞状态的映射
+     */
+    @Override
+    public Map<Long, Boolean> getLikedArticleIds(Long userId, Long[] articleIds)
+    {
+        Map<Long, Boolean> result = new HashMap<>();
+        if (articleIds == null || articleIds.length == 0)
+        {
+            return result;
+        }
+        List<Long> likedIds = blogUserLikeMapper.selectLikedArticleIds(userId, articleIds);
+        for (Long id : articleIds)
+        {
+            result.put(id, likedIds.contains(id));
+        }
+        return result;
     }
 }

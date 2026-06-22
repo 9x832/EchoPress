@@ -1,6 +1,7 @@
 package com.ruoyiblog.service;
 
 import java.util.List;
+import java.util.Map;
 import com.ruoyiblog.domain.BlogUserLike;
 
 /**
@@ -58,4 +59,22 @@ public interface IBlogUserLikeService
      * @return 结果
      */
     public int deleteBlogUserLikeByUserId(Long userId);
+
+    /**
+     * 切换用户点赞状态（点赞/取消点赞）
+     *
+     * @param userId 用户ID
+     * @param articleId 文章ID
+     * @return 包含点赞状态和点赞数的Map
+     */
+    public Map<String, Object> toggleLike(Long userId, Long articleId);
+
+    /**
+     * 批量查询用户对文章的点赞状态
+     *
+     * @param userId 用户ID
+     * @param articleIds 文章ID数组
+     * @return 文章ID与点赞状态的映射
+     */
+    public Map<Long, Boolean> getLikedArticleIds(Long userId, Long[] articleIds);
 }
