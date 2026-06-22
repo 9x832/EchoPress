@@ -98,7 +98,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, nextTick, onMounted } from 'vue'
+import { ref, reactive, computed, nextTick, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { getPublicArticle, getLikedStatus } from '@/api/article'
@@ -163,24 +163,33 @@ function findNickName(userId) {
   return c?.nickName || ''
 }
 
-onMounted(async () => {
+async function loadArticle() {
+  const id = Number(route.params.id)
+  loading.value = true
+  isLiked.value = false
   try {
-    const res = await getPublicArticle(route.params.id)
+    const res = await getPublicArticle(id)
     if (res.code === 200) {
       article.value = res.data || {}
       if (userStore.token) {
         try {
-          const statusRes = await getLikedStatus([Number(route.params.id)])
+          const statusRes = await getLikedStatus([id])
           if (statusRes.code === 200) {
-            isLiked.value = statusRes.data[route.params.id] || false
+            isLiked.value = statusRes.data[id] || false
           }
         } catch {}
       }
+    } else {
+      article.value = {}
     }
   } finally {
     loading.value = false
   }
   fetchComments()
+}
+
+onMounted(async () => {
+  loadArticle()
   try {
     const tagRes = await getPublicTagList()
     if (tagRes.code === 200) {
@@ -190,6 +199,8 @@ onMounted(async () => {
     }
   } catch {}
 })
+
+watch(() => route.params.id, loadArticle)
 
 async function fetchComments() {
   try {
